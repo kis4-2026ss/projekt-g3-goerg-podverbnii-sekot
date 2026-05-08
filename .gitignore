@@ -1,0 +1,5 @@
+# Ignore any repos directory and its contents
+**/repos/**
+
+# Ignore any reviews directory and its contents
+**/reviews/**
