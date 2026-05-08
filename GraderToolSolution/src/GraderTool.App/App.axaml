@@ -1,0 +1,68 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:app="using:GraderTool.App"
+             x:Class="GraderTool.App.App"
+             RequestedThemeVariant="Dark">
+    <Application.DataTemplates>
+        <app:ViewLocator />
+    </Application.DataTemplates>
+
+    <Application.Resources>
+        <SolidColorBrush x:Key="AppBackgroundBrush" Color="#0F172A" />
+        <SolidColorBrush x:Key="HeaderBackgroundBrush" Color="#111827" />
+        <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="#111827" />
+        <SolidColorBrush x:Key="SurfaceBrush" Color="#1F2937" />
+        <SolidColorBrush x:Key="SurfaceAltBrush" Color="#111827" />
+        <SolidColorBrush x:Key="InputBackgroundBrush" Color="#0B1220" />
+        <SolidColorBrush x:Key="BorderBrushCustom" Color="#374151" />
+        <SolidColorBrush x:Key="TextBrush" Color="#F9FAFB" />
+        <SolidColorBrush x:Key="MutedTextBrush" Color="#CBD5E1" />
+        <SolidColorBrush x:Key="AccentBrush" Color="#14B8A6" />
+        <SolidColorBrush x:Key="DangerBackgroundBrush" Color="#3B0A0A" />
+        <SolidColorBrush x:Key="DangerBorderBrush" Color="#EF4444" />
+        <SolidColorBrush x:Key="DangerTextBrush" Color="#FCA5A5" />
+    </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme />
+
+        <Style Selector="Window">
+            <Setter Property="Background" Value="{DynamicResource AppBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+        </Style>
+
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+        </Style>
+
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushCustom}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="Padding" Value="18" />
+        </Style>
+
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="{DynamicResource InputBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushCustom}" />
+        </Style>
+
+        <Style Selector="ComboBox">
+            <Setter Property="Background" Value="{DynamicResource InputBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushCustom}" />
+        </Style>
+
+        <Style Selector="CheckBox">
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+        </Style>
+
+        <Style Selector="Button">
+            <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushCustom}" />
+        </Style>
+    </Application.Styles>
+</Application>

@@ -1,0 +1,26 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="GraderTool.App.Views.Pages.PushReviewsView">
+    <Border Background="{DynamicResource AppBackgroundBrush}">
+        <StackPanel Spacing="16">
+            <StackPanel Spacing="4">
+                <TextBlock Text="{Binding Title}" FontSize="30" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding Description}" FontSize="14" Foreground="{DynamicResource MutedTextBrush}" />
+            </StackPanel>
+
+            <Border Classes="card">
+                <StackPanel Spacing="12" MaxWidth="620" HorizontalAlignment="Left">
+                    <TextBlock Text="Parameter" FontSize="18" FontWeight="SemiBold" />
+                    <TextBlock Text="Hausübungsnummer" />
+                    <TextBox Text="{Binding HomeworkNumber}" />
+                    <TextBlock Text="Repo-Filter" />
+                    <TextBox Text="{Binding RepoFilter}" Watermark="leer = alle passenden Repos" />
+                    <CheckBox IsChecked="{Binding DryRun}" Content="Dry Run verwenden" />
+                    <CheckBox IsChecked="{Binding SubmitImmediately}" Content="Reviews sofort submitten" />
+                    <Button Content="Pending Reviews erstellen" IsEnabled="False" HorizontalAlignment="Left" />
+                    <TextBlock Text="Die Startlogik wird im nächsten Schritt an PushReviewsWorkflow angeschlossen. Submit sollte später zusätzlich bestätigt werden." Foreground="{DynamicResource MutedTextBrush}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Border>
+</UserControl>

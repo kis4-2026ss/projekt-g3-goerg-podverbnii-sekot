@@ -1,0 +1,3 @@
+# one GitHub login or roster identifier per line
+max.mustermann
+erika.musterfrau

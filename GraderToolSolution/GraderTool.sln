@@ -1,0 +1,54 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraderTool.App", "src\GraderTool.App\GraderTool.App.csproj", "{551F3F67-A33C-42E0-A965-B7A2FB3232C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraderTool.Core", "src\GraderTool.Core\GraderTool.Core.csproj", "{F092B680-9F5A-4D05-AC36-0595A11B7CA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraderTool.Infrastructure", "src\GraderTool.Infrastructure\GraderTool.Infrastructure.csproj", "{A954B2E3-F182-48AE-9D22-F8FCC61DA828}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraderTool.GitHub", "src\GraderTool.GitHub\GraderTool.GitHub.csproj", "{FA2BFC9F-A50D-494C-AD09-6DFFC0F10894}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraderTool.Ai", "src\GraderTool.Ai\GraderTool.Ai.csproj", "{746C4AB9-E628-4B2C-85C7-25417A15A512}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraderTool.Tests", "src\GraderTool.Tests\GraderTool.Tests.csproj", "{09531F28-17DB-42B4-BBB9-1D9E6EC92D2C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{551F3F67-A33C-42E0-A965-B7A2FB3232C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{551F3F67-A33C-42E0-A965-B7A2FB3232C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{551F3F67-A33C-42E0-A965-B7A2FB3232C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{551F3F67-A33C-42E0-A965-B7A2FB3232C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F092B680-9F5A-4D05-AC36-0595A11B7CA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F092B680-9F5A-4D05-AC36-0595A11B7CA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F092B680-9F5A-4D05-AC36-0595A11B7CA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F092B680-9F5A-4D05-AC36-0595A11B7CA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A954B2E3-F182-48AE-9D22-F8FCC61DA828}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A954B2E3-F182-48AE-9D22-F8FCC61DA828}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A954B2E3-F182-48AE-9D22-F8FCC61DA828}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A954B2E3-F182-48AE-9D22-F8FCC61DA828}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA2BFC9F-A50D-494C-AD09-6DFFC0F10894}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA2BFC9F-A50D-494C-AD09-6DFFC0F10894}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA2BFC9F-A50D-494C-AD09-6DFFC0F10894}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA2BFC9F-A50D-494C-AD09-6DFFC0F10894}.Release|Any CPU.Build.0 = Release|Any CPU
+		{746C4AB9-E628-4B2C-85C7-25417A15A512}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{746C4AB9-E628-4B2C-85C7-25417A15A512}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{746C4AB9-E628-4B2C-85C7-25417A15A512}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{746C4AB9-E628-4B2C-85C7-25417A15A512}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09531F28-17DB-42B4-BBB9-1D9E6EC92D2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09531F28-17DB-42B4-BBB9-1D9E6EC92D2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09531F28-17DB-42B4-BBB9-1D9E6EC92D2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09531F28-17DB-42B4-BBB9-1D9E6EC92D2C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A933A587-DFDA-43FC-8CD7-866CAADA767A}
+	EndGlobalSection
+EndGlobal

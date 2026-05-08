@@ -1,0 +1,49 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:GraderTool.App.Views.Controls"
+        x:Class="GraderTool.App.Views.MainWindow"
+        Title="Grader Tool"
+        Width="1200"
+        Height="780"
+        MinWidth="960"
+        MinHeight="640"
+        Background="{DynamicResource AppBackgroundBrush}">
+    <Grid RowDefinitions="Auto,*" Background="{DynamicResource AppBackgroundBrush}">
+        <controls:ValidationHeader DataContext="{Binding ValidationHeader}" />
+
+        <Grid Grid.Row="1" ColumnDefinitions="240,*" Background="{DynamicResource AppBackgroundBrush}">
+            <Border Grid.Column="0" Background="{DynamicResource SidebarBackgroundBrush}" Padding="16">
+                <DockPanel LastChildFill="True">
+                    <StackPanel DockPanel.Dock="Top" Spacing="4" Margin="0,0,0,20">
+                        <TextBlock Text="Grader Tool" FontSize="22" FontWeight="SemiBold" Foreground="{DynamicResource TextBrush}" />
+                        <TextBlock Text="Java-Hausübungen" FontSize="13" Foreground="{DynamicResource MutedTextBrush}" />
+                    </StackPanel>
+
+                    <ItemsControl ItemsSource="{Binding NavigationItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding Command}"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Left"
+                                        Padding="12,10"
+                                        Margin="0,0,0,6"
+                                        Background="Transparent"
+                                        Foreground="{DynamicResource TextBrush}"
+                                        BorderThickness="0">
+                                    <StackPanel Orientation="Horizontal" Spacing="10">
+                                        <TextBlock Text="{Binding Icon}" Width="20" Foreground="{DynamicResource TextBrush}" />
+                                        <TextBlock Text="{Binding Title}" Foreground="{DynamicResource TextBrush}" />
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </DockPanel>
+            </Border>
+
+            <Border Grid.Column="1" Padding="24" Background="{DynamicResource AppBackgroundBrush}">
+                <ContentControl Content="{Binding CurrentPage}" />
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

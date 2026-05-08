@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="GraderTool.App.Views.Pages.DashboardView">
+    <Border Background="{DynamicResource AppBackgroundBrush}" Padding="0">
+        <ScrollViewer>
+            <StackPanel Spacing="18">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="{Binding Title}" FontSize="30" FontWeight="SemiBold" Foreground="{DynamicResource TextBrush}" />
+                    <TextBlock Text="{Binding Description}" FontSize="14" Foreground="{DynamicResource MutedTextBrush}" />
+                </StackPanel>
+
+                <Grid ColumnDefinitions="*,*,*">
+                    <Border Classes="card" Grid.Column="0" Margin="0,0,8,0">
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="1. Fetch Repos" FontSize="18" FontWeight="SemiBold" />
+                            <TextBlock Text="GitHub-Classroom-Repositories anhand der Assignment-ID und Student:innenliste holen." Foreground="{DynamicResource MutedTextBrush}" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Border>
+                    <Border Classes="card" Grid.Column="1" Margin="8,0,8,0">
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="2. Generate Reviews" FontSize="18" FontWeight="SemiBold" />
+                            <TextBlock Text="Java-Dateien sammeln, KI-Review erzeugen und JSON-Dateien speichern." Foreground="{DynamicResource MutedTextBrush}" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Border>
+                    <Border Classes="card" Grid.Column="2" Margin="8,0,0,0">
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="3. Push Reviews" FontSize="18" FontWeight="SemiBold" />
+                            <TextBlock Text="Review-JSONs als Pending Reviews auf Feedback-PRs übertragen." Foreground="{DynamicResource MutedTextBrush}" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <Border Classes="card">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Nächster Schritt" FontSize="18" FontWeight="SemiBold" />
+                        <TextBlock Text="Zuerst die Validierung ausführen. Danach Fetch Repos mit Dry Run testen." Foreground="{DynamicResource MutedTextBrush}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</UserControl>

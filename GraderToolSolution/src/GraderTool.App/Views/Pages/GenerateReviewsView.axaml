@@ -1,0 +1,36 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="GraderTool.App.Views.Pages.GenerateReviewsView">
+    <Border Background="{DynamicResource AppBackgroundBrush}">
+        <StackPanel Spacing="16">
+            <StackPanel Spacing="4">
+                <TextBlock Text="{Binding Title}" FontSize="30" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding Description}" FontSize="14" Foreground="{DynamicResource MutedTextBrush}" />
+            </StackPanel>
+
+            <Border Classes="card">
+                <StackPanel Spacing="12" MaxWidth="620" HorizontalAlignment="Left">
+                    <TextBlock Text="Parameter" FontSize="18" FontWeight="SemiBold" />
+                    <TextBlock Text="Hausübungsnummer" />
+                    <TextBox Text="{Binding HomeworkNumber}" />
+                    <TextBlock Text="Modell" />
+                    <TextBox Text="{Binding Model}" />
+                    <TextBlock Text="Repo-Filter" />
+                    <TextBox Text="{Binding RepoFilter}" Watermark="z. B. DaKo" />
+                    <Grid ColumnDefinitions="*,*">
+                        <StackPanel Spacing="6" Margin="0,0,6,0">
+                            <TextBlock Text="Max Chars" />
+                            <TextBox Text="{Binding MaxChars}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Spacing="6" Margin="6,0,0,0">
+                            <TextBlock Text="Temperature" />
+                            <TextBox Text="{Binding Temperature}" />
+                        </StackPanel>
+                    </Grid>
+                    <Button Content="Reviews generieren" IsEnabled="False" HorizontalAlignment="Left" />
+                    <TextBlock Text="Die Startlogik wird im nächsten Schritt an GenerateReviewsWorkflow angeschlossen." Foreground="{DynamicResource MutedTextBrush}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Border>
+</UserControl>

@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="GraderTool.App.Views.Pages.SettingsView">
+    <Border Background="{DynamicResource AppBackgroundBrush}">
+        <StackPanel Spacing="16">
+            <StackPanel Spacing="4">
+                <TextBlock Text="{Binding Title}" FontSize="30" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding Description}" FontSize="14" Foreground="{DynamicResource MutedTextBrush}" />
+            </StackPanel>
+
+            <Border Classes="card">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Settings-Seite" FontSize="18" FontWeight="SemiBold" />
+                    <TextBlock Text="Hier werden später Grader Root, Student:innenliste, Standardmodell und Sicherheitseinstellungen bearbeitet." Foreground="{DynamicResource MutedTextBrush}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Border>
+</UserControl>

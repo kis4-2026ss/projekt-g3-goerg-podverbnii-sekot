@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="GraderTool.App.Views.Controls.ValidationHeader">
+    <Border Padding="16,10" Background="{DynamicResource HeaderBackgroundBrush}">
+        <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                <TextBlock Text="Validierung" Foreground="{DynamicResource TextBrush}" FontWeight="SemiBold" />
+                <Border CornerRadius="12" Padding="10,4" Background="{DynamicResource BorderBrushCustom}">
+                    <TextBlock Text="{Binding StatusText}" Foreground="{DynamicResource TextBrush}" FontSize="12" />
+                </Border>
+            </StackPanel>
+
+            <TextBlock Grid.Column="1"
+                       Text="Git, SSH, GitHub API, Gemini Key und lokale Pfade prüfen"
+                       Foreground="{DynamicResource MutedTextBrush}"
+                       FontSize="12"
+                       VerticalAlignment="Center"
+                       Margin="16,0" />
+
+            <Button Grid.Column="2"
+                    Command="{Binding RunValidationCommand}"
+                    IsEnabled="{Binding !IsRunning}"
+                    Padding="14,7"
+                    Content="Validierung starten" />
+        </Grid>
+    </Border>
+</UserControl>
