@@ -1,19 +1,104 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="GraderTool.App.Views.Pages.SettingsView">
-    <Border Background="{DynamicResource AppBackgroundBrush}">
-        <StackPanel Spacing="16">
+             x:Class="GraderTool.App.Views.Pages.SettingsView"
+             Background="{DynamicResource AppBackgroundBrush}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Spacing="18" Margin="0,0,8,0">
             <StackPanel Spacing="4">
-                <TextBlock Text="{Binding Title}" FontSize="30" FontWeight="SemiBold" />
-                <TextBlock Text="{Binding Description}" FontSize="14" Foreground="{DynamicResource MutedTextBrush}" />
+                <TextBlock Text="{Binding Title}" FontSize="30" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundBrush}" />
+                <TextBlock Text="{Binding Description}" FontSize="14" Foreground="{DynamicResource MutedForegroundBrush}" TextWrapping="Wrap" />
             </StackPanel>
 
             <Border Classes="card">
-                <StackPanel Spacing="8">
-                    <TextBlock Text="Settings-Seite" FontSize="18" FontWeight="SemiBold" />
-                    <TextBlock Text="Hier werden später Grader Root, Student:innenliste, Standardmodell und Sicherheitseinstellungen bearbeitet." Foreground="{DynamicResource MutedTextBrush}" TextWrapping="Wrap" />
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Lokale Pfade" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundBrush}" />
+                    <TextBlock Text="Leer lassen bedeutet: automatisch auflösen. Grader Root wird sonst aus Settings, paths.txt, GRADER_ROOT oder Projektordner bestimmt."
+                               Foreground="{DynamicResource MutedForegroundBrush}"
+                               TextWrapping="Wrap" />
+
+                    <TextBlock Text="Project Root Override" Foreground="{DynamicResource ForegroundBrush}" />
+                    <TextBox Text="{Binding ProjectRoot}" Watermark="Optional" />
+
+                    <TextBlock Text="Grader Root" Foreground="{DynamicResource ForegroundBrush}" />
+                    <TextBox Text="{Binding GraderRoot}" Watermark="z. B. C:\\Users\\...\\grader oder /home/.../grader" />
+
+                    <TextBlock Text="Students File" Foreground="{DynamicResource ForegroundBrush}" />
+                    <TextBox Text="{Binding StudentsFile}" Watermark="Leer lassen = grader-root/students_list.txt" />
                 </StackPanel>
             </Border>
+
+            <Border Classes="card">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Defaults" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundBrush}" />
+
+                    <TextBlock Text="Default Match Mode" Foreground="{DynamicResource ForegroundBrush}" />
+                    <ComboBox ItemsSource="{Binding MatchModes}"
+                              SelectedItem="{Binding DefaultMatchBy}"
+                              HorizontalAlignment="Stretch" />
+
+                    <TextBlock Text="Default Review Model" Foreground="{DynamicResource ForegroundBrush}" />
+                    <TextBox Text="{Binding DefaultReviewModel}" Watermark="gemini-2.5-flash" />
+
+                    <Grid ColumnDefinitions="*,16,*">
+                        <StackPanel Grid.Column="0" Spacing="6">
+                            <TextBlock Text="Default Max Chars" Foreground="{DynamicResource ForegroundBrush}" />
+                            <TextBox Text="{Binding DefaultMaxChars}" Watermark="50000" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2" Spacing="6">
+                            <TextBlock Text="Default Temperature" Foreground="{DynamicResource ForegroundBrush}" />
+                            <TextBox Text="{Binding DefaultTemperature}" Watermark="0.2" />
+                        </StackPanel>
+                    </Grid>
+
+                    <CheckBox IsChecked="{Binding DryRunByDefault}" Content="Dry Run standardmäßig aktivieren" />
+                    <CheckBox IsChecked="{Binding RequireSubmitConfirmation}" Content="Submit-Bestätigung verlangen" />
+                </StackPanel>
+            </Border>
+
+            <Border Classes="card">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Aufgelöste Pfade" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundBrush}" />
+                    <TextBlock Text="Settings-Datei:" Foreground="{DynamicResource MutedForegroundBrush}" />
+                    <TextBlock Text="{Binding SettingsFilePath}" FontFamily="Consolas, Menlo, monospace" TextWrapping="Wrap" />
+
+                    <TextBlock Text="Project Root:" Foreground="{DynamicResource MutedForegroundBrush}" />
+                    <TextBlock Text="{Binding ResolvedProjectRoot}" FontFamily="Consolas, Menlo, monospace" TextWrapping="Wrap" />
+
+                    <TextBlock Text="Grader Root:" Foreground="{DynamicResource MutedForegroundBrush}" />
+                    <TextBlock Text="{Binding ResolvedGraderRoot}" FontFamily="Consolas, Menlo, monospace" TextWrapping="Wrap" />
+
+                    <TextBlock Text="Repos:" Foreground="{DynamicResource MutedForegroundBrush}" />
+                    <TextBlock Text="{Binding ResolvedReposDirectory}" FontFamily="Consolas, Menlo, monospace" TextWrapping="Wrap" />
+
+                    <TextBlock Text="Reviews:" Foreground="{DynamicResource MutedForegroundBrush}" />
+                    <TextBlock Text="{Binding ResolvedReviewsDirectory}" FontFamily="Consolas, Menlo, monospace" TextWrapping="Wrap" />
+
+                    <TextBlock Text="Logs:" Foreground="{DynamicResource MutedForegroundBrush}" />
+                    <TextBlock Text="{Binding ResolvedLogsDirectory}" FontFamily="Consolas, Menlo, monospace" TextWrapping="Wrap" />
+
+                    <TextBlock Text="Students File:" Foreground="{DynamicResource MutedForegroundBrush}" />
+                    <TextBlock Text="{Binding ResolvedStudentsFile}" FontFamily="Consolas, Menlo, monospace" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <Border IsVisible="{Binding HasError}"
+                    Background="#3B1111"
+                    BorderBrush="#EF4444"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Padding="12">
+                <TextBlock Text="{Binding LastError}" Foreground="#FCA5A5" TextWrapping="Wrap" />
+            </Border>
+
+            <TextBlock Text="{Binding Status}" Foreground="{DynamicResource MutedForegroundBrush}" TextWrapping="Wrap" />
+
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <Button Content="Laden" Command="{Binding LoadCommand}" />
+                <Button Content="Speichern" Command="{Binding SaveCommand}" />
+                <Button Content="Pfade prüfen" Command="{Binding ResolvePathsCommand}" />
+                <Button Content="Defaults" Command="{Binding ResetToDefaultsCommand}" />
+            </StackPanel>
         </StackPanel>
-    </Border>
+    </ScrollViewer>
 </UserControl>

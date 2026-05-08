@@ -1,5 +1,6 @@
 using GraderTool.Core.Models;
 using GraderTool.Core.Services;
+using GraderTool.GitHub.Auth;
 using GraderTool.Infrastructure.Git;
 using GraderTool.Infrastructure.ProcessExecution;
 
@@ -10,15 +11,18 @@ public sealed class EnvironmentValidationService : IValidationService
     private readonly IPathResolver _pathResolver;
     private readonly ProcessRunner _processRunner;
     private readonly GitSshValidator _gitSshValidator;
+    private readonly GitHubAuthValidator _gitHubAuthValidator;
 
     public EnvironmentValidationService(
         IPathResolver pathResolver,
-        ProcessRunner? processRunner = null,
-        GitSshValidator? gitSshValidator = null)
+        GitSshValidator gitSshValidator,
+        GitHubAuthValidator gitHubAuthValidator,
+        ProcessRunner processRunner)
     {
         _pathResolver = pathResolver;
-        _processRunner = processRunner ?? new ProcessRunner();
-        _gitSshValidator = gitSshValidator ?? new GitSshValidator(_processRunner);
+        _gitSshValidator = gitSshValidator;
+        _gitHubAuthValidator = gitHubAuthValidator;
+        _processRunner = processRunner;
     }
 
     public async Task<ValidationReport> ValidateEnvironmentAsync(CancellationToken cancellationToken = default)

@@ -9,21 +9,16 @@ namespace GraderTool.GitHub.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddGraderToolGitHub(
-        this IServiceCollection services,
-        Action<GitHubApiOptions>? configureOptions = null)
+    public static IServiceCollection AddGraderToolGitHub(this IServiceCollection services)
     {
-        GitHubApiOptions options = new();
-        configureOptions?.Invoke(options);
-
-        services.AddSingleton(options);
         services.AddSingleton<GitHubTokenProvider>();
+        services.AddSingleton<GitHubAuthValidator>();
+
         services.AddHttpClient<IGitHubClient, GitHubRestClient>();
 
-        services.AddTransient<GitHubAuthValidator>();
-        services.AddTransient<IGitHubClassroomService, GitHubClassroomService>();
-        services.AddTransient<IPullRequestService, PullRequestService>();
-        services.AddTransient<IPullRequestReviewService, PullRequestReviewService>();
+        services.AddSingleton<IGitHubClassroomService, GitHubClassroomService>();
+        services.AddSingleton<IPullRequestService, PullRequestService>();
+        services.AddSingleton<IPullRequestReviewService, PullRequestReviewService>();
 
         return services;
     }

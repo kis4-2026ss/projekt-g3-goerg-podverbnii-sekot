@@ -1,31 +1,46 @@
-using System.Text.Json.Serialization;
 using GraderTool.GitHub.Clients;
 
 namespace GraderTool.GitHub.Auth;
 
 public sealed class GitHubAuthValidator
 {
+    private readonly GitHubTokenProvider _tokenProvider;
     private readonly IGitHubClient _client;
 
-    public GitHubAuthValidator(IGitHubClient client)
+    public GitHubAuthValidator(GitHubTokenProvider tokenProvider, IGitHubClient client)
     {
+        _tokenProvider = tokenProvider;
         _client = client;
     }
 
     public async Task<GitHubAuthResult> ValidateAsync(CancellationToken cancellationToken = default)
     {
+        if (!_tokenProvider.HasToken())
+        {
+            return new GitHubAuthResult(
+                false,
+                "GitHub Token fehlt. Setze GITHUB_TOKEN oder GH_TOKEN als Environment Variable.");
+        }
+
         try
         {
-            var user = await _client.GetAsync<UserDto>("/user", cancellationToken).ConfigureAwait(false);
-            return user is null || string.IsNullOrWhiteSpace(user.Login)
-                ? new GitHubAuthResult(false, null, "GitHub API returned no user login.")
-                : new GitHubAuthResult(true, user.Login, null);
+            var user = await _client.GetAsync<GitHubUserDto>("/user", cancellationToken);
+
+            if (user is null || string.IsNullOrWhiteSpace(user.Login))
+            {
+                return new GitHubAuthResult(false, "GitHub Auth fehlgeschlagen: Keine User-Daten erhalten.");
+            }
+
+            return new GitHubAuthResult(true, $"GitHub Auth erfolgreich als {user.Login}.");
         }
-        catch (Exception exc)
+        catch (Exception ex)
         {
-            return new GitHubAuthResult(false, null, exc.Message);
+            return new GitHubAuthResult(false, $"GitHub Auth fehlgeschlagen: {ex.Message}");
         }
     }
 
-    private sealed record UserDto([property: JsonPropertyName("login")] string? Login);
+    private sealed class GitHubUserDto
+    {
+        public string Login { get; set; } = "";
+    }
 }

@@ -12,34 +12,34 @@ public sealed class JsonSettingsService
         AllowTrailingCommas = true
     };
 
-    private readonly string _settingsFilePath;
-
     public JsonSettingsService(string settingsFilePath)
     {
-        _settingsFilePath = settingsFilePath;
+        SettingsFilePath = settingsFilePath;
     }
+
+    public string SettingsFilePath { get; }
 
     public async Task<AppSettings> LoadAsync(CancellationToken cancellationToken = default)
     {
-        if (!File.Exists(_settingsFilePath))
+        if (!File.Exists(SettingsFilePath))
         {
             return new AppSettings();
         }
 
-        await using FileStream stream = File.OpenRead(_settingsFilePath);
+        await using FileStream stream = File.OpenRead(SettingsFilePath);
         AppSettings? settings = await JsonSerializer.DeserializeAsync<AppSettings>(stream, JsonOptions, cancellationToken);
         return settings ?? new AppSettings();
     }
 
     public async Task SaveAsync(AppSettings settings, CancellationToken cancellationToken = default)
     {
-        string? directory = Path.GetDirectoryName(_settingsFilePath);
+        string? directory = Path.GetDirectoryName(SettingsFilePath);
         if (!string.IsNullOrWhiteSpace(directory))
         {
             Directory.CreateDirectory(directory);
         }
 
-        await using FileStream stream = File.Create(_settingsFilePath);
+        await using FileStream stream = File.Create(SettingsFilePath);
         await JsonSerializer.SerializeAsync(stream, settings, JsonOptions, cancellationToken);
     }
 }

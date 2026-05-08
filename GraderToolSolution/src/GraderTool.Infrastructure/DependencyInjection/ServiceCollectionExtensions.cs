@@ -8,6 +8,7 @@ using GraderTool.Infrastructure.Logging;
 using GraderTool.Infrastructure.Paths;
 using GraderTool.Infrastructure.ProcessExecution;
 using GraderTool.Infrastructure.PullRequests;
+using GraderTool.Infrastructure.Settings;
 using GraderTool.Infrastructure.Validation;
 using GraderTool.Infrastructure.Workflows.FetchRepos;
 using GraderTool.Infrastructure.Workflows.GenerateReviews;
@@ -20,11 +21,13 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddGraderToolInfrastructure(this IServiceCollection services)
     {
+        services.AddSingleton(_ => new JsonSettingsService(GetDefaultSettingsFilePath()));
+
         services.AddSingleton<ProjectRootDetector>();
         services.AddSingleton<GraderRootResolver>();
         services.AddSingleton<IPathResolver>(serviceProvider =>
             new PathResolver(
-                settingsService: null,
+                settingsService: serviceProvider.GetRequiredService<JsonSettingsService>(),
                 projectRootDetector: serviceProvider.GetRequiredService<ProjectRootDetector>(),
                 graderRootResolver: serviceProvider.GetRequiredService<GraderRootResolver>()));
 
@@ -50,5 +53,16 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IPushReviewsWorkflow, PushReviewsWorkflow>();
 
         return services;
+    }
+
+    private static string GetDefaultSettingsFilePath()
+    {
+        string appDataRoot = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        if (string.IsNullOrWhiteSpace(appDataRoot))
+        {
+            appDataRoot = AppContext.BaseDirectory;
+        }
+
+        return Path.Combine(appDataRoot, "GraderTool", "appsettings.local.json");
     }
 }
