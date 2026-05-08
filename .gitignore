@@ -3,3 +3,5 @@
 
 # Ignore any reviews directory and its contents
 **/reviews/**
+
+.idea
