@@ -12,13 +12,15 @@ Success will be measured by
 - and Feedback Utility measured via student surveys regarding the clarity and actionability of the AI comments.
 
 ### What system, feature or workflow will you develop or analyze? 
-
-Workflow: The system will fetch the code, execute a test suite to gather execution data, and then pass both the source code and the test logs to an AI agent. The AI will then generate a "Code Review" style comment directly on the student’s GitHub repository in a Json format to complement the Github API.
+Workflow: 
+- Ingestion: Automatically fetch student source code from GitHub.
+- Execution: Run a dedicated test suite to capture runtime logs and execution data.
+- Analysis: Pass the source code and test logs to an AI agent for synthesis.
+- Delivery: Generate a structured "Code Review" (JSON format) pushed via the GitHub API as a comment on the repository.
 
 ### How does AI assistance contribute to the development process?
-
 Provides code structure and writes the complex and critical parts of the source code. 
-It also is there to provide guidance in developing eg. the project structure. 
+It also is there to provide guidance and recommendations in developing the project structure and use of technologies. 
 
 
 ### Provide development/architecture diagram illustrating the project idea (software components, roles and use of AI tools, interaction between human and AI)
@@ -26,8 +28,19 @@ It also is there to provide guidance in developing eg. the project structure.
 
 
 ## Project Plan
+Main deadline (Project): May 28th, 2026
 
-
+- Developing code and ensuring that it works as intended
+- Implementing a UI for better usage of the application
+- Testing usability and correctness of the application and reviewing it
 
 
 ## Teamwork & Responsibilieties
+### Egor Podverbnii
+Main Backend-Developer for the project, responsible for a clear code structure and the main parts of the code.
+
+### David Görg
+Main Frontend-Developer, mainly responsible for the UI of the application and general support regarding documentation
+
+### David Sekot
+Main Focus on the documentation and progress of the project as well as supporting the other devs with their main tasks. 
