@@ -21,6 +21,9 @@ public sealed partial class SettingsViewModel : PageViewModelBase
     private string _studentsFile = string.Empty;
 
     [ObservableProperty]
+    private string _geminiApiKey = string.Empty;
+
+    [ObservableProperty]
     private string _defaultMatchBy = "login";
 
     [ObservableProperty]
@@ -65,8 +68,10 @@ public sealed partial class SettingsViewModel : PageViewModelBase
     [ObservableProperty]
     private bool _isBusy;
 
-    public SettingsViewModel(JsonSettingsService settingsService, IPathResolver pathResolver)
-        : base("Settings", "Konfiguration für Grader Root, Student:innenliste, Modelle und Sicherheitsoptionen.")
+    public SettingsViewModel(
+        JsonSettingsService settingsService,
+        IPathResolver pathResolver)
+        : base("Settings", "Konfiguration für Grader Root, Student:innenliste, API Keys, Modelle und Sicherheitsoptionen.")
     {
         _settingsService = settingsService;
         _pathResolver = pathResolver;
@@ -96,8 +101,13 @@ public sealed partial class SettingsViewModel : PageViewModelBase
             ProjectRoot = settings.ProjectRoot ?? string.Empty;
             GraderRoot = settings.GraderRoot ?? string.Empty;
             StudentsFile = settings.StudentsFile ?? string.Empty;
+            GeminiApiKey = settings.GeminiApiKey ?? string.Empty;
+
             DefaultMatchBy = NormalizeMatchMode(settings.DefaultMatchBy);
-            DefaultReviewModel = settings.DefaultReviewModel;
+            DefaultReviewModel = string.IsNullOrWhiteSpace(settings.DefaultReviewModel)
+                ? "gemini-2.5-flash"
+                : settings.DefaultReviewModel.Trim();
+
             DefaultMaxChars = settings.DefaultMaxChars.ToString();
             DefaultTemperature = settings.DefaultTemperature.ToString(System.Globalization.CultureInfo.InvariantCulture);
             DryRunByDefault = settings.DryRunByDefault;
@@ -125,7 +135,11 @@ public sealed partial class SettingsViewModel : PageViewModelBase
                 return;
             }
 
-            if (!double.TryParse(DefaultTemperature, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double temperature))
+            if (!double.TryParse(
+                    DefaultTemperature,
+                    System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out double temperature))
             {
                 LastError = "Default Temperature muss eine Zahl sein. Beispiel: 0.2";
                 Status = LastError;
@@ -137,8 +151,13 @@ public sealed partial class SettingsViewModel : PageViewModelBase
                 ProjectRoot = ToNullIfWhiteSpace(ProjectRoot),
                 GraderRoot = ToNullIfWhiteSpace(GraderRoot),
                 StudentsFile = ToNullIfWhiteSpace(StudentsFile),
+                GeminiApiKey = ToNullIfWhiteSpace(GeminiApiKey),
+
                 DefaultMatchBy = NormalizeMatchMode(DefaultMatchBy),
-                DefaultReviewModel = string.IsNullOrWhiteSpace(DefaultReviewModel) ? "gemini-2.5-flash" : DefaultReviewModel.Trim(),
+                DefaultReviewModel = string.IsNullOrWhiteSpace(DefaultReviewModel)
+                    ? "gemini-2.5-flash"
+                    : DefaultReviewModel.Trim(),
+
                 DefaultMaxChars = maxChars,
                 DefaultTemperature = temperature,
                 DryRunByDefault = DryRunByDefault,
@@ -146,6 +165,7 @@ public sealed partial class SettingsViewModel : PageViewModelBase
             };
 
             await _settingsService.SaveAsync(settings);
+
             Status = "Settings gespeichert.";
             await ResolvePathsInternalAsync();
         });
@@ -163,20 +183,25 @@ public sealed partial class SettingsViewModel : PageViewModelBase
         ProjectRoot = string.Empty;
         GraderRoot = string.Empty;
         StudentsFile = string.Empty;
+        GeminiApiKey = string.Empty;
+
         DefaultMatchBy = "login";
         DefaultReviewModel = "gemini-2.5-flash";
         DefaultMaxChars = "50000";
         DefaultTemperature = "0.2";
         DryRunByDefault = true;
         RequireSubmitConfirmation = true;
+
         LastError = string.Empty;
         Status = "Standardwerte gesetzt. Zum Übernehmen speichern.";
+
         await ResolvePathsInternalAsync();
     }
 
     private async Task ResolvePathsInternalAsync()
     {
         AppPaths paths = await _pathResolver.ResolveAsync();
+
         ResolvedProjectRoot = paths.ProjectRoot;
         ResolvedGraderRoot = paths.GraderRoot;
         ResolvedReposDirectory = paths.ReposDirectory;
@@ -196,6 +221,7 @@ public sealed partial class SettingsViewModel : PageViewModelBase
         {
             IsBusy = true;
             LastError = string.Empty;
+
             await action();
         }
         catch (Exception exception)
@@ -211,7 +237,9 @@ public sealed partial class SettingsViewModel : PageViewModelBase
 
     private static string? ToNullIfWhiteSpace(string value)
     {
-        return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+        return string.IsNullOrWhiteSpace(value)
+            ? null
+            : value.Trim();
     }
 
     private static string NormalizeMatchMode(string? value)

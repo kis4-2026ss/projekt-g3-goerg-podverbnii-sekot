@@ -27,19 +27,30 @@ public sealed class JsonSettingsService
         }
 
         await using FileStream stream = File.OpenRead(SettingsFilePath);
-        AppSettings? settings = await JsonSerializer.DeserializeAsync<AppSettings>(stream, JsonOptions, cancellationToken);
+
+        AppSettings? settings = await JsonSerializer.DeserializeAsync<AppSettings>(
+            stream,
+            JsonOptions,
+            cancellationToken);
+
         return settings ?? new AppSettings();
     }
 
     public async Task SaveAsync(AppSettings settings, CancellationToken cancellationToken = default)
     {
         string? directory = Path.GetDirectoryName(SettingsFilePath);
+
         if (!string.IsNullOrWhiteSpace(directory))
         {
             Directory.CreateDirectory(directory);
         }
 
         await using FileStream stream = File.Create(SettingsFilePath);
-        await JsonSerializer.SerializeAsync(stream, settings, JsonOptions, cancellationToken);
+
+        await JsonSerializer.SerializeAsync(
+            stream,
+            settings,
+            JsonOptions,
+            cancellationToken);
     }
 }

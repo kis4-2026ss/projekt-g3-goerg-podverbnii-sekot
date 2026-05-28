@@ -2,6 +2,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using GraderTool.Core.Models;
 using GraderTool.Core.Services;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 
 namespace GraderTool.Infrastructure.FileSystem;
 
@@ -11,6 +13,7 @@ public sealed class ReviewJsonStore : IReviewStore
     {
         WriteIndented = true,
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
         ReadCommentHandling = JsonCommentHandling.Skip,
         AllowTrailingCommas = true

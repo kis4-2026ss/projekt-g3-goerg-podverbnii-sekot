@@ -1,36 +1,167 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="GraderTool.App.Views.Pages.GenerateReviewsView">
-    <Border Background="{DynamicResource AppBackgroundBrush}">
-        <StackPanel Spacing="16">
-            <StackPanel Spacing="4">
-                <TextBlock Text="{Binding Title}" FontSize="30" FontWeight="SemiBold" />
-                <TextBlock Text="{Binding Description}" FontSize="14" Foreground="{DynamicResource MutedTextBrush}" />
-            </StackPanel>
+             x:Class="GraderTool.App.Views.Pages.GenerateReviewsView"
+             Background="{DynamicResource AppBackgroundBrush}">
 
-            <Border Classes="card">
-                <StackPanel Spacing="12" MaxWidth="620" HorizontalAlignment="Left">
-                    <TextBlock Text="Parameter" FontSize="18" FontWeight="SemiBold" />
-                    <TextBlock Text="Hausübungsnummer" />
-                    <TextBox Text="{Binding HomeworkNumber}" />
-                    <TextBlock Text="Modell" />
-                    <TextBox Text="{Binding Model}" />
-                    <TextBlock Text="Repo-Filter" />
-                    <TextBox Text="{Binding RepoFilter}" Watermark="z. B. DaKo" />
-                    <Grid ColumnDefinitions="*,*">
-                        <StackPanel Spacing="6" Margin="0,0,6,0">
-                            <TextBlock Text="Max Chars" />
-                            <TextBox Text="{Binding MaxChars}" />
-                        </StackPanel>
-                        <StackPanel Grid.Column="1" Spacing="6" Margin="6,0,0,0">
-                            <TextBlock Text="Temperature" />
-                            <TextBox Text="{Binding Temperature}" />
-                        </StackPanel>
-                    </Grid>
-                    <Button Content="Reviews generieren" IsEnabled="False" HorizontalAlignment="Left" />
-                    <TextBlock Text="Die Startlogik wird im nächsten Schritt an GenerateReviewsWorkflow angeschlossen." Foreground="{DynamicResource MutedTextBrush}" TextWrapping="Wrap" />
-                </StackPanel>
-            </Border>
-        </StackPanel>
-    </Border>
+	<Grid RowDefinitions="Auto,18,*">
+		<StackPanel Grid.Row="0" Spacing="4">
+			<TextBlock Text="{Binding Title}"
+                       FontSize="30"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource ForegroundBrush}" />
+
+			<TextBlock Text="{Binding Description}"
+                       FontSize="14"
+                       Foreground="{DynamicResource MutedForegroundBrush}"
+                       TextWrapping="Wrap" />
+		</StackPanel>
+
+		<Grid Grid.Row="2"
+              ColumnDefinitions="2*,24,3*">
+
+			<Border Grid.Column="0"
+                    Classes="card">
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<StackPanel Spacing="14">
+						<TextBlock Text="Parameter"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource ForegroundBrush}" />
+
+						<TextBlock Text="Hausübungsnummer"
+                                   Foreground="{DynamicResource ForegroundBrush}" />
+
+						<TextBox Text="{Binding HomeworkNumberText}"
+                                 Watermark="z. B. 4" />
+
+						<TextBlock Text="Modell"
+           						Foreground="{DynamicResource ForegroundBrush}" />
+
+						<TextBox Text="{Binding Model}"
+								 Watermark="gemini-2.5-flash" />
+
+						<CheckBox IsChecked="{Binding ProcessAllRepositories}"
+                                  Content="Alle Repositories verarbeiten" />
+
+						<TextBlock Text="Repo-Filter"
+                                   Foreground="{DynamicResource ForegroundBrush}" />
+
+						<TextBox Text="{Binding RepoFilter}"
+                                 Watermark="z. B. DaKo"
+                                 IsEnabled="{Binding RequiresRepoFilter}" />
+
+						<TextBlock Text="Der Repo-Filter sucht im Repository-Namen. Aus Sicherheitsgründen ist ein Filter nötig, außer 'Alle Repositories verarbeiten' ist aktiviert."
+                                   Foreground="{DynamicResource MutedForegroundBrush}"
+                                   TextWrapping="Wrap" />
+
+						<Grid ColumnDefinitions="*,16,*">
+							<StackPanel Grid.Column="0" Spacing="6">
+								<TextBlock Text="Max Chars"
+                                           Foreground="{DynamicResource ForegroundBrush}" />
+
+								<TextBox Text="{Binding MaxCharsText}"
+                                         Watermark="50000" />
+							</StackPanel>
+
+							<StackPanel Grid.Column="2" Spacing="6">
+								<TextBlock Text="Temperature"
+                                           Foreground="{DynamicResource ForegroundBrush}" />
+
+								<TextBox Text="{Binding TemperatureText}"
+                                         Watermark="0.2" />
+							</StackPanel>
+						</Grid>
+
+						<Grid ColumnDefinitions="*,16,*">
+							<StackPanel Grid.Column="0" Spacing="6">
+								<TextBlock Text="Sleep Seconds"
+                                           Foreground="{DynamicResource ForegroundBrush}" />
+
+								<TextBox Text="{Binding SleepSecondsText}"
+                                         Watermark="0" />
+							</StackPanel>
+
+							<StackPanel Grid.Column="2" Spacing="6">
+								<TextBlock Text="Cache TTL Seconds"
+                                           Foreground="{DynamicResource ForegroundBrush}" />
+
+								<TextBox Text="{Binding CacheTtlSecondsText}"
+                                         Watermark="3600" />
+							</StackPanel>
+						</Grid>
+
+						<CheckBox IsChecked="{Binding UseReadmeCache}"
+                                  Content="README Cache verwenden" />
+
+						<TextBlock Text="Hinweis: Der aktuelle Workflow liest README.md und sendet sie an Gemini. Der explizite README-Cache ist vorbereitet, aber noch nicht vollständig im Workflow umgesetzt."
+                                   Foreground="{DynamicResource MutedForegroundBrush}"
+                                   TextWrapping="Wrap" />
+
+						<Border IsVisible="{Binding HasError}"
+                                Background="#3B1111"
+                                BorderBrush="#EF4444"
+                                BorderThickness="1"
+                                CornerRadius="10"
+                                Padding="12">
+							<TextBlock Text="{Binding LastError}"
+                                       Foreground="#FCA5A5"
+                                       TextWrapping="Wrap" />
+						</Border>
+
+						<TextBlock Text="{Binding Status}"
+                                   Foreground="{DynamicResource MutedForegroundBrush}"
+                                   TextWrapping="Wrap" />
+
+						<ProgressBar IsVisible="{Binding HasProgress}"
+                                     Minimum="0"
+                                     Maximum="{Binding TotalProgress}"
+                                     Value="{Binding CurrentProgress}" />
+
+						<StackPanel Orientation="Horizontal" Spacing="10">
+							<Button Content="Eingaben prüfen"
+                                    Command="{Binding ValidateInputsCommand}" />
+
+							<Button Content="Reviews generieren"
+                                    Command="{Binding StartCommand}" />
+
+							<Button Content="Abbrechen"
+                                    Command="{Binding CancelCommand}" />
+
+							<Button Content="Log leeren"
+                                    Command="{Binding ClearLogCommand}" />
+						</StackPanel>
+					</StackPanel>
+				</ScrollViewer>
+			</Border>
+
+			<Border Grid.Column="2"
+                    Classes="card"
+                    Background="#020617">
+				<Grid RowDefinitions="Auto,12,*">
+					<TextBlock Grid.Row="0"
+                               Text="Live Log"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource ForegroundBrush}" />
+
+					<ScrollViewer Grid.Row="2"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Auto">
+						<ItemsControl ItemsSource="{Binding LogLines}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<TextBlock Text="{Binding DisplayText}"
+                                               FontFamily="Consolas, Menlo, monospace"
+                                               FontSize="13"
+                                               Foreground="{Binding Foreground}"
+                                               TextWrapping="NoWrap"
+                                               Margin="0,0,0,6" />
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</ScrollViewer>
+				</Grid>
+			</Border>
+		</Grid>
+	</Grid>
 </UserControl>

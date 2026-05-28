@@ -6,6 +6,8 @@ public sealed class AppSettings
     public string? GraderRoot { get; set; }
     public string? StudentsFile { get; set; }
 
+    public string? GeminiApiKey { get; set; }
+
     public string DefaultMatchBy { get; set; } = "login";
     public string DefaultReviewModel { get; set; } = "gemini-2.5-flash";
     public int DefaultMaxChars { get; set; } = 50000;
