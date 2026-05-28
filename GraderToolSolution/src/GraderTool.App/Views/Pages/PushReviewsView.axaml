@@ -1,26 +1,161 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="GraderTool.App.Views.Pages.PushReviewsView">
-    <Border Background="{DynamicResource AppBackgroundBrush}">
-        <StackPanel Spacing="16">
-            <StackPanel Spacing="4">
-                <TextBlock Text="{Binding Title}" FontSize="30" FontWeight="SemiBold" />
-                <TextBlock Text="{Binding Description}" FontSize="14" Foreground="{DynamicResource MutedTextBrush}" />
-            </StackPanel>
+             x:Class="GraderTool.App.Views.Pages.PushReviewsView"
+             Background="{DynamicResource AppBackgroundBrush}">
 
-            <Border Classes="card">
-                <StackPanel Spacing="12" MaxWidth="620" HorizontalAlignment="Left">
-                    <TextBlock Text="Parameter" FontSize="18" FontWeight="SemiBold" />
-                    <TextBlock Text="Hausübungsnummer" />
-                    <TextBox Text="{Binding HomeworkNumber}" />
-                    <TextBlock Text="Repo-Filter" />
-                    <TextBox Text="{Binding RepoFilter}" Watermark="leer = alle passenden Repos" />
-                    <CheckBox IsChecked="{Binding DryRun}" Content="Dry Run verwenden" />
-                    <CheckBox IsChecked="{Binding SubmitImmediately}" Content="Reviews sofort submitten" />
-                    <Button Content="Pending Reviews erstellen" IsEnabled="False" HorizontalAlignment="Left" />
-                    <TextBlock Text="Die Startlogik wird im nächsten Schritt an PushReviewsWorkflow angeschlossen. Submit sollte später zusätzlich bestätigt werden." Foreground="{DynamicResource MutedTextBrush}" TextWrapping="Wrap" />
-                </StackPanel>
-            </Border>
-        </StackPanel>
-    </Border>
+	<Grid RowDefinitions="Auto,18,*">
+		<StackPanel Grid.Row="0" Spacing="4">
+			<TextBlock Text="{Binding Title}"
+                       FontSize="30"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource ForegroundBrush}" />
+
+			<TextBlock Text="{Binding Description}"
+                       FontSize="14"
+                       Foreground="{DynamicResource MutedForegroundBrush}"
+                       TextWrapping="Wrap" />
+		</StackPanel>
+
+		<Grid Grid.Row="2"
+              ColumnDefinitions="2*,24,3*">
+
+			<Border Grid.Column="0"
+                    Classes="card">
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<StackPanel Spacing="14">
+						<TextBlock Text="Parameter"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource ForegroundBrush}" />
+
+						<TextBlock Text="Hausübungsnummer"
+                                   Foreground="{DynamicResource ForegroundBrush}" />
+
+						<TextBox Text="{Binding HomeworkNumberText}"
+                                 Watermark="z. B. 4" />
+
+						<CheckBox IsChecked="{Binding ProcessAllRepositories}"
+                                  Content="Alle Repositories verarbeiten" />
+
+						<TextBlock Text="Repo-Filter"
+                                   Foreground="{DynamicResource ForegroundBrush}" />
+
+						<TextBox Text="{Binding RepoFilter}"
+                                 Watermark="z. B. DaKo"
+                                 IsEnabled="{Binding RequiresRepoFilter}" />
+
+						<TextBlock Text="Der Repo-Filter sucht im Repository-Namen. Aus Sicherheitsgründen ist ein Filter nötig, außer 'Alle Repositories verarbeiten' ist aktiviert."
+                                   Foreground="{DynamicResource MutedForegroundBrush}"
+                                   TextWrapping="Wrap" />
+
+						<TextBlock Text="Feedback Branch Hint"
+                                   Foreground="{DynamicResource ForegroundBrush}" />
+
+						<TextBox Text="{Binding FeedbackBranchHint}"
+                                 Watermark="feedback" />
+
+						<TextBlock Text="Es wird ein offener Pull Request gesucht, dessen Titel 'feedback' enthält oder dessen Head-Branch diesen Hint enthält."
+                                   Foreground="{DynamicResource MutedForegroundBrush}"
+                                   TextWrapping="Wrap" />
+
+						<CheckBox IsChecked="{Binding DryRun}"
+                                  Content="Dry Run verwenden" />
+
+						<TextBlock Text="Dry Run zeigt nur, was passieren würde. Es werden keine Reviews auf GitHub erstellt."
+                                   Foreground="{DynamicResource MutedForegroundBrush}"
+                                   TextWrapping="Wrap" />
+
+						<CheckBox IsChecked="{Binding SubmitImmediately}"
+                                  Content="Reviews sofort submitten" />
+
+						<Border IsVisible="{Binding ShowSubmitWarning}"
+                                Background="#3B1111"
+                                BorderBrush="#EF4444"
+                                BorderThickness="1"
+                                CornerRadius="10"
+                                Padding="12">
+							<StackPanel Spacing="8">
+								<TextBlock Text="Gefährliche Aktion"
+                                           FontWeight="SemiBold"
+                                           Foreground="#FCA5A5" />
+
+								<TextBlock Text="Wenn Submit aktiv ist, werden die Reviews nicht nur als Pending Review erstellt, sondern direkt an GitHub submitted."
+                                           Foreground="#FCA5A5"
+                                           TextWrapping="Wrap" />
+
+								<TextBlock Text="Zum Bestätigen exakt SUBMIT eingeben:"
+                                           Foreground="#FCA5A5" />
+
+								<TextBox Text="{Binding SubmitConfirmation}"
+                                         Watermark="SUBMIT" />
+							</StackPanel>
+						</Border>
+
+						<Border IsVisible="{Binding HasError}"
+                                Background="#3B1111"
+                                BorderBrush="#EF4444"
+                                BorderThickness="1"
+                                CornerRadius="10"
+                                Padding="12">
+							<TextBlock Text="{Binding LastError}"
+                                       Foreground="#FCA5A5"
+                                       TextWrapping="Wrap" />
+						</Border>
+
+						<TextBlock Text="{Binding Status}"
+                                   Foreground="{DynamicResource MutedForegroundBrush}"
+                                   TextWrapping="Wrap" />
+
+						<ProgressBar IsVisible="{Binding HasProgress}"
+                                     Minimum="0"
+                                     Maximum="{Binding TotalProgress}"
+                                     Value="{Binding CurrentProgress}" />
+
+						<StackPanel Orientation="Horizontal" Spacing="10">
+							<Button Content="Eingaben prüfen"
+                                    Command="{Binding ValidateInputsCommand}" />
+
+							<Button Content="Pending Reviews erstellen"
+                                    Command="{Binding StartCommand}" />
+
+							<Button Content="Abbrechen"
+                                    Command="{Binding CancelCommand}" />
+
+							<Button Content="Log leeren"
+                                    Command="{Binding ClearLogCommand}" />
+						</StackPanel>
+					</StackPanel>
+				</ScrollViewer>
+			</Border>
+
+			<Border Grid.Column="2"
+                    Classes="card"
+                    Background="#020617">
+				<Grid RowDefinitions="Auto,12,*">
+					<TextBlock Grid.Row="0"
+                               Text="Live Log"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource ForegroundBrush}" />
+
+					<ScrollViewer Grid.Row="2"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Auto">
+						<ItemsControl ItemsSource="{Binding LogLines}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<TextBlock Text="{Binding DisplayText}"
+                                               FontFamily="Consolas, Menlo, monospace"
+                                               FontSize="13"
+                                               Foreground="{Binding Foreground}"
+                                               TextWrapping="NoWrap"
+                                               Margin="0,0,0,6" />
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</ScrollViewer>
+				</Grid>
+			</Border>
+		</Grid>
+	</Grid>
 </UserControl>
